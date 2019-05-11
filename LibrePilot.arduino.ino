@@ -5,6 +5,7 @@
 SoftwareSerial mySerial(8, 9);  // RX, TX
 LibrePilotSerial lps(&mySerial); // init software serial
 int refreshRate = 50; // set data refresh rate
+bool debug = true;
 
 const int LED = 7; // set LED pin
 
@@ -18,6 +19,7 @@ void setup() {
   // initialize serial communication at 57600 bits per second:
   Serial.begin(57600);
   lps.serial->begin(57600); // initialize LibrePilotSerial Object
+  if (debug) Serial.println("Start");
   pinMode(LED, OUTPUT); // set LED as output
   LEDsetup(1000); // test LED on startup
 }
@@ -27,8 +29,11 @@ void loop() {
   lps.request(FLIGHTSTATUS_OBJID);
   boolean ok = lps.receive(FLIGHTSTATUS_OBJID, FlightStatusDataUnion.arr, 200);
 
-  Serial.print(" Result fs: ");
-  Serial.println(FlightStatusDataUnion.data.Armed);      
+  if (debug) {
+    Serial.print(" Result fs: ");
+    //Serial.println(FlightStatusDataUnion.data.Armed);
+    Serial.println(FlightStatusDataUnion.arr;
+  }   
 
   if(ok) {
     if(FlightStatusDataUnion.data.Armed == FLIGHTSTATUS_ARMED_DISARMED) {
